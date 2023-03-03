@@ -17,16 +17,15 @@ def create_properties_file(json_file, properties_file):
                     properties[k] = v
             else:
                 if k in properties:
-                    if properties[k] != v:
-                        raise ValueError(f"Inconsistent value for key '{k}' across clusters")
+                    properties[k].append(v)
                 else:
-                    properties[k] = v
+                    properties[k] = [v]
 
     with open(properties_file, 'w') as f:
         for k, v in properties.items():
-            if isinstance(v, list):
-                v = sorted(list(set(v)))
-            line = f"{k} = {' '.join(str(item) for item in v)}\n"
+            values = sorted(list(set(v)))
+            line = f"{k} = {', '.join(str(item) for item in values)}\n"
             f.write(line)
+
 
 </pre>
